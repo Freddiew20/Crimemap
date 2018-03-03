@@ -1,0 +1,4 @@
+select ST_Distance_Sphere(
+    point( (select longitude from crimes where id = '1'), (select latitude from crimes where id = '1')),
+    point((select longitude from crimes where id = '2'), (select latitude from crimes where id = '2'))
+)/1000
