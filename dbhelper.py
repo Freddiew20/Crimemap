@@ -43,18 +43,63 @@ class DBHelper:
     finally:
       connection.close()
 
+
+  def get_all_crimenes(self):
+    connection = self.connect()
+    try:
+      query = "SELECT latitude,longitude,date,category,description FROM crimes;"
+      with connection.cursor() as cursor:
+        cursor.execute(query)
+      named_crimes=[]
+      for crime in cursor:
+        named_crime = {
+          'id':cursor.lastrowid,
+          'latitude':crime[0],
+          'longitude':crime[1],
+          'date':datetime.datetime.strftime(crime[2],'%Y-%m-%d'),
+          'category':crime[3],
+          'description':crime[4],
+        }
+        named_crimes.append(named_crime)
+      return named_crimes
+    finally:
+      connection.close()
+
   def get_distance(self):
     connection = self.connect()
     try:
-      query = "SELECT ST_Distance_Sphere(point( (SELECT longitude from crimes where id = '2'), (select latitude from crimes where id = '2')),point((select longitude from crimes where id = '1'), (select latitude from crimes where id = '1')))/1000"
+      data = {
+      'po':1,
+      'ide' : 2
+      }
+      query = "SELECT ST_Distance_Sphere(point((SELECT longitude from crimes where id = %(po)s), (select latitude from crimes where id = %(po)s)),point((select longitude from crimes where id = %(ide)s), (select latitude from crimes where id = %(ide)s)))/1000"
       with connection.cursor() as cursor:
-        cursor.execute(query)
+        cursor.execute(query, data)
+        dist = cursor.fetchone()
+        return dist
+
+    finally:
+      connection.close()
+  
+
+  def get_distancia(self,ide,point):
+    connection = self.connect()
+    try:
+      data = {
+      'po': point,
+      'ide' : ide
+      }
+      query = "SELECT ST_Distance_Sphere(point((SELECT longitude from crimes where id = %(po)s), (select latitude from crimes where id = %(po)s)),point((select longitude from crimes where id = %(ide)s), (select latitude from crimes where id = %(ide)s)))/1000"
+      with connection.cursor() as cursor:
+        cursor.execute(query, data)
         dist = cursor.fetchone()
         return dist
 
     finally:
       connection.close()
     
+
+
   def get_all_inputs(self):
     connection = self.connect()
     try:

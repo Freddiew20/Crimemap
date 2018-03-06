@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+ <meta charset="iso-8859-1">
+ <link type="text/css" rel="stylesheet" href="{{url_for('static', filename='css/style.css') }}" />
+</head>
+<body onload="initialize()">
+<h1>Todos los Crímenes</h1>
+<h2>Submit new crime</h2>
+{% if error_message %}
+   <div id="error"><p>{{error_message}}</p></div>
+{% endif %}
+{% for crimes in crimes %}
+  <span>{{crimes}}</span>
+ {% endfor %}
+</div>
+
+</body>
+</html>

@@ -40,6 +40,22 @@ def home(error_message=None):
             categories=categories, error_message=error_message, distance=distance
                         )
  
+@app.route("/dist/<int(min=0,max=9):point>/<int(min=0,max=9):ide>")
+def get_distancia_entre(point,ide,error_message=None):
+  crimes=DB.get_all_crimes()
+  distancia=DB.get_distancia(point,ide)
+  crimes = json.dumps(crimes, encoding='latin1')
+  distancia = json.dumps(distancia)
+  return render_template("home.html",crimes=crimes,
+       categories=categories, error_message=error_message, distance=distancia
+   )
+
+@app.route("/all")
+def get_todos():
+  crimes=DB.get_all_crimenes()
+  crimes = json.dumps(crimes, encoding='latin1')
+  return render_template("home2.html",crimes=crimes)
+
 
 @app.route("/add", methods=["POST"])
 def add():
