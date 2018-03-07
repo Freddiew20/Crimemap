@@ -47,18 +47,18 @@ class DBHelper:
   def get_all_crimenes(self):
     connection = self.connect()
     try:
-      query = "SELECT latitude,longitude,date,category,description FROM crimes;"
+      query = "SELECT id, latitude,longitude,date,category,description FROM crimes;"
       with connection.cursor() as cursor:
         cursor.execute(query)
       named_crimes=[]
       for crime in cursor:
         named_crime = {
-          'id':cursor.lastrowid,
-          'latitude':crime[0],
-          'longitude':crime[1],
-          'date':datetime.datetime.strftime(crime[2],'%Y-%m-%d'),
-          'category':crime[3],
-          'description':crime[4],
+          'id':crime[0],
+          'latitude':crime[1],
+          'longitude':crime[2],
+          'date':datetime.datetime.strftime(crime[3],'%Y-%m-%d'),
+          'category':crime[4],
+          'description':crime[5],
         }
         named_crimes.append(named_crime)
       return named_crimes

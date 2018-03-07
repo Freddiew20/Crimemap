@@ -3,6 +3,7 @@ from dbhelper import DBHelper
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import Response
 import json
 import datetime
 import dateparser
@@ -54,8 +55,7 @@ def get_distancia_entre(point,ide,error_message=None):
 def get_todos():
   crimes=DB.get_all_crimenes()
   crimes = json.dumps(crimes, encoding='latin1')
-  return render_template("home2.html",crimes=crimes)
-
+  return Response(crimes, mimetype='application/json')
 
 @app.route("/add", methods=["POST"])
 def add():
